@@ -1,0 +1,776 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>No Defaults Kit</title>
+<meta name="description" content="Two agent skills that make Claude Code, Cursor, Codex and other AI coding agents build websites that don't look AI-generated.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@800&family=Big+Shoulders+Display:wght@700;900&family=Archivo:wght@400;500;600&family=Martian+Mono:wght@400;500&display=swap">
+<style>
+  /* Tokens: a self-healing cutting mat. Single, deliberate dark identity. */
+  :root {
+    color-scheme: dark;
+    --mat: #1E4A3C;
+    --mat-deep: #163A2F;
+    --line: #D9E6C8;
+    --paper: #F1F3EC;
+    --ink: #13241D;
+    --blade: #F4C430;
+    --on-mat: #EEF2E6;
+    --on-mat-muted: #B9CCB8;
+    --ink-muted: #4B5D54;
+    --gutter: clamp(16px, 5vw, 64px);
+    --measure: 62ch;
+    --display: "Big Shoulders Display", "Arial Narrow", "Roboto Condensed", Impact, sans-serif;
+    --stencil: "Big Shoulders Stencil Display", "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+    --body: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    --mono: "Martian Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    --ease-out: cubic-bezier(.22, 1, .36, 1);
+  }
+
+  /* lenis.css (inlined) */
+  html.lenis, html.lenis body { height: auto; }
+  .lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
+  .lenis [data-lenis-prevent] { overscroll-behavior: contain; }
+  .lenis.lenis-smooth iframe { pointer-events: none; }
+
+  body {
+    margin: 0;
+    background-color: var(--mat);
+    background-image:
+      linear-gradient(to right, rgb(217 230 200 / .15) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(217 230 200 / .15) 1px, transparent 1px),
+      linear-gradient(to right, rgb(217 230 200 / .06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(217 230 200 / .06) 1px, transparent 1px);
+    background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
+    color: var(--on-mat);
+    font-family: var(--body);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--blade); outline-offset: 3px; }
+  ::selection { background: var(--blade); color: var(--ink); }
+
+  /* Ruler along the top edge of the mat */
+  .ruler {
+    position: relative;
+    height: 40px;
+    overflow: hidden;
+    border-bottom: 1px solid rgb(217 230 200 / .35);
+    background-image:
+      repeating-linear-gradient(to right, rgb(217 230 200 / .7) 0 1px, transparent 1px 120px),
+      repeating-linear-gradient(to right, rgb(217 230 200 / .55) 0 1px, transparent 1px 24px),
+      repeating-linear-gradient(to right, rgb(217 230 200 / .3) 0 1px, transparent 1px 12px);
+    background-size: 100% 20px, 100% 12px, 100% 6px;
+    background-repeat: repeat-x;
+  }
+  .ruler-nums span {
+    position: absolute;
+    top: 22px;
+    transform: translateX(-50%);
+    font: 400 0.625rem/1 var(--mono);
+    color: var(--on-mat-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .ruler-unit { position: absolute; right: 12px; top: 22px; font: 400 .625rem/1 var(--mono); color: var(--on-mat-muted); }
+
+  main { padding-inline: var(--gutter); }
+  .wrap { max-width: 1180px; margin-inline: auto; }
+
+  .mono-label {
+    font: 500 0.6875rem/1.4 var(--mono);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--on-mat-muted);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; padding-block: clamp(40px, 7vw, 88px) clamp(56px, 8vw, 112px); }
+  .hero::before {               /* the mat's 45° guide line */
+    content: "";
+    position: absolute;
+    left: calc(-1 * var(--gutter)); right: calc(-1 * var(--gutter)); top: 0; bottom: 0;
+    background: linear-gradient(to top right, transparent calc(50% - .5px), rgb(217 230 200 / .16) 50%, transparent calc(50% + .5px));
+    pointer-events: none;
+  }
+  .guide-label { position: absolute; right: 0; top: 14px; }
+  .h1 {
+    font-family: var(--stencil);
+    font-weight: 800;
+    font-size: clamp(4rem, 15.5vw, 12.5rem);
+    line-height: .84;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin: 14px 0 0;
+    color: var(--on-mat);
+  }
+  .h1 .stop { color: var(--blade); }
+  .hero-row {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(28px, 5vw, 72px);
+    align-items: start;
+    margin-top: clamp(28px, 4vw, 48px);
+  }
+  .lede { font-size: clamp(1.2rem, 1.9vw, 1.45rem); line-height: 1.45; margin: 0 0 16px; max-width: 34ch; text-wrap: pretty; }
+  .hero-copy p:not(.lede):not(.fine) { color: var(--on-mat-muted); margin: 0 0 28px; max-width: 42ch; }
+
+  .buy {
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    background: var(--blade);
+    color: var(--ink);
+    font: 700 1.35rem/1 var(--display);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 16px 24px 15px;
+    border-radius: 2px;
+    transition: background-color .2s var(--ease-out);
+  }
+  .buy svg { width: 20px; height: 20px; transition: transform .35s var(--ease-out); }
+  .buy:hover { background: #FFD34D; }
+  .buy:hover svg { transform: translateX(4px); }
+  .buy:active svg { transform: translateX(8px); }
+  .fine { font: 400 .75rem/1.6 var(--mono); color: var(--on-mat-muted); margin: 14px 0 0; }
+
+  .sticker-wrap { margin: 0; }
+  .sticker {
+    position: relative;
+    transform: rotate(-2deg);
+    aspect-ratio: 16 / 10;
+    max-width: 100%;
+    cursor: grab;
+  }
+  .sticker-art {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 6px;
+    clip-path: polygon(0 0, calc(100% - 72px) 0, 100% 72px, 100% 100%, 0 100%);
+    box-shadow: 0 1px 0 rgb(0 0 0 / .25);
+  }
+  .sticker::after {               /* static peeled corner, used when WebGL is off */
+    content: "";
+    position: absolute;
+    top: 0; right: 0;
+    width: 72px; height: 72px;
+    background: linear-gradient(225deg, transparent 50%, #E3E6DB 50%, #F6F7F2 78%, #DADDD1);
+    border-bottom-left-radius: 6px;
+    box-shadow: -6px 8px 14px -6px rgb(0 0 0 / .45);
+  }
+  .sticker.is-gl .sticker-art { opacity: 0; }
+  .sticker.is-gl::after { display: none; }
+  .sticker-wrap figcaption {
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    align-items: baseline;
+  }
+  .sticker-wrap figcaption .hint { color: var(--blade); }
+  .still .sticker-wrap .hint { display: none; }
+
+  #gl { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; }
+
+  /* ---------- Sections ---------- */
+  .section { padding-block: clamp(72px, 10vw, 136px); border-top: 1px solid rgb(217 230 200 / .22); }
+  .h2 {
+    font-family: var(--display);
+    font-weight: 900;
+    font-size: clamp(2.75rem, 7vw, 5.25rem);
+    line-height: .92;
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    margin: 0 0 20px;
+    text-wrap: balance;
+  }
+  .section-lede { max-width: var(--measure); color: var(--on-mat-muted); margin: 0 0 clamp(36px, 5vw, 56px); text-wrap: pretty; }
+
+  /* What gets cut */
+  .cut-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; padding-bottom: 12px; border-bottom: 1px solid rgb(217 230 200 / .35); }
+  .cutlist { list-style: none; margin: 0; padding: 0; }
+  .cutlist li {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 8px 24px;
+    padding-block: 20px;
+    border-bottom: 1px dashed rgb(217 230 200 / .25);
+    align-items: baseline;
+  }
+  .def { position: relative; color: var(--on-mat-muted); justify-self: start; }
+  .knife {
+    position: absolute;
+    left: -4px; right: -4px; top: 55%;
+    height: 2px;
+    background: var(--blade);
+    transform-origin: left center;
+  }
+  .dec { font-weight: 500; color: var(--on-mat); }
+  .cut-mobile-label { display: none; }
+
+  /* Concept statement on paper */
+  .proof { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: clamp(32px, 5vw, 72px); align-items: start; }
+  .sheet {
+    background: var(--paper);
+    color: var(--ink);
+    border-radius: 2px;
+    box-shadow: 0 1px 0 rgb(0 0 0 / .18), 0 24px 40px -24px rgb(0 0 0 / .6);
+  }
+  .concept-sheet { padding: clamp(22px, 3.5vw, 40px); }
+  .sheet-top {
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px 16px;
+    font: 500 .6875rem/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase;
+    color: var(--ink-muted);
+    padding-bottom: 14px; margin-bottom: 18px;
+    border-bottom: 1.5px solid var(--ink);
+  }
+  .concept { display: grid; grid-template-columns: 13ch minmax(0, 1fr); gap: 16px 20px; margin: 0; }
+  .concept dt { font: 500 .75rem/1.9 var(--mono); color: var(--ink-muted); letter-spacing: .02em; }
+  .concept dd { margin: 0; font-size: 1.02rem; line-height: 1.55; }
+  .concept dd strong { font-weight: 600; }
+  .sheet-foot { margin: 22px 0 0; font: 400 .75rem/1.6 var(--mono); color: var(--ink-muted); }
+
+  /* In the kit */
+  .pieces { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(20px, 3vw, 32px); align-items: start; }
+  .piece { padding: clamp(22px, 3vw, 34px); }
+  .piece h3 { font: 700 clamp(1.8rem, 3.2vw, 2.4rem)/1 var(--display); text-transform: lowercase; margin: 0 0 12px; letter-spacing: .01em; }
+  .piece > p { margin: 0 0 18px; color: var(--ink); }
+  .files { list-style: none; margin: 0; padding: 0; border-top: 1px solid rgb(19 36 29 / .2); }
+  .files li { padding-block: 11px; border-bottom: 1px solid rgb(19 36 29 / .12); font-size: .95rem; color: var(--ink-muted); }
+  .files code { display: block; font: 500 .78rem/1.5 var(--mono); color: var(--ink); margin-bottom: 2px; word-break: break-word; }
+  .piece .note { margin: 16px 0 0; font-size: .92rem; color: var(--ink-muted); }
+  .piece .note a { color: var(--ink); text-underline-offset: 3px; }
+  .also { margin: 32px 0 0; max-width: var(--measure); }
+  .works { margin: 14px 0 0; }
+
+  /* Install */
+  .install-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: clamp(32px, 5vw, 72px); align-items: start; }
+  .term { background: var(--ink); color: var(--on-mat); border-radius: 2px; box-shadow: 0 24px 40px -24px rgb(0 0 0 / .7); }
+  .term-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; padding: 10px 10px 0; border-bottom: 1px solid rgb(217 230 200 / .18); }
+  .tab {
+    appearance: none; border: 0; background: none; color: var(--on-mat-muted);
+    font: 500 .75rem/1 var(--mono); letter-spacing: .02em;
+    padding: 12px 14px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+  }
+  .tab[aria-selected="true"] { color: var(--on-mat); border-bottom-color: var(--blade); }
+  .copy {
+    margin-left: auto; appearance: none; cursor: pointer;
+    background: none; color: var(--on-mat); border: 1px solid rgb(217 230 200 / .35); border-radius: 2px;
+    font: 500 .75rem/1 var(--mono); padding: 9px 14px; margin-bottom: 8px;
+  }
+  .copy:hover { border-color: var(--blade); }
+  .term pre { margin: 0; padding: 22px 20px 24px; overflow-x: auto; }
+  .term code { font: 400 .85rem/1.7 var(--mono); white-space: pre; }
+  .term .prompt { color: var(--blade); user-select: none; }
+  .install-note { font-size: .95rem; color: var(--on-mat-muted); margin: 18px 0 0; }
+
+  /* Price */
+  .price-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(32px, 5vw, 72px); align-items: start; }
+  .price-card { padding: clamp(24px, 4vw, 44px); }
+  .amount { font: 800 clamp(6rem, 14vw, 9.5rem)/.8 var(--stencil); margin: 0 0 18px; letter-spacing: -0.01em; }
+  .amount small { font: 500 .8rem/1 var(--mono); letter-spacing: .06em; vertical-align: top; margin-left: 6px; color: var(--ink-muted); }
+  .price-card > p { margin: 0 0 24px; max-width: 38ch; }
+  .price-card .fine { color: var(--ink-muted); }
+  .faq h3 { font: 700 1.5rem/1.15 var(--display); text-transform: uppercase; letter-spacing: .02em; margin: 0 0 8px; }
+  .faq p { margin: 0 0 30px; color: var(--on-mat-muted); max-width: 56ch; }
+  .faq p:last-child { margin-bottom: 0; }
+
+  footer.foot {
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px;
+    padding-block: 28px 40px;
+    border-top: 1px solid rgb(217 230 200 / .35);
+  }
+  .foot .mono-label { text-transform: none; letter-spacing: .02em; }
+  .email { user-select: all; color: var(--on-mat); }
+
+  /* ---------- Narrow screens ---------- */
+  @media (max-width: 860px) {
+    .hero-row, .proof, .pieces, .install-grid, .price-grid { grid-template-columns: minmax(0, 1fr); }
+    .sticker-wrap { order: -1; }
+  }
+  @media (max-width: 640px) {
+    .cut-head { display: none; }
+    .cutlist li { grid-template-columns: minmax(0, 1fr); padding-block: 18px; }
+    .cut-mobile-label { display: block; }
+    .concept { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+    .concept dd { margin-bottom: 12px; }
+    .sticker-art { clip-path: polygon(0 0, calc(100% - 44px) 0, 100% 44px, 100% 100%, 0 100%); }
+    .sticker::after { width: 44px; height: 44px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .buy, .buy svg { transition: none; }
+  }
+</style>
+
+<div class="ruler" aria-hidden="true"><div class="ruler-nums"></div><span class="ruler-unit">cm</span></div>
+
+<main>
+  <header class="hero wrap" id="top">
+    <span class="guide-label mono-label" aria-hidden="true">45°</span>
+    <p class="mono-label">Agent skills for Claude Code, Cursor, Codex, Copilot and Gemini CLI</p>
+    <h1 class="h1">No defaults<span class="stop">.</span></h1>
+
+    <div class="hero-row">
+      <div class="hero-copy">
+        <p class="lede">Two skills that make your AI coding agent decide every element of a website, instead of shipping the one it always ships.</p>
+        <p>It writes a concept first. Then it builds with smooth scroll, choreographed reveals and one WebGL moment, using recipes checked against current GSAP, Lenis and Three.js.</p>
+        <a class="buy" href="#buy">Get the kit for $19
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 10h13M11 4.5 16.5 10 11 15.5"/></svg>
+        </a>
+        <p class="fine">One-time payment · 14-day refund · Free 1.x updates</p>
+      </div>
+
+      <figure class="sticker-wrap">
+        <div class="sticker" id="sticker">
+          <canvas id="stickerImg" class="sticker-art" width="1280" height="800" role="img"
+                  aria-label="A generic AI-generated landing page: purple gradient, a centered headline reading 'Build faster with AI-powered solutions', a primary and a ghost button, and three icon cards."></canvas>
+        </div>
+        <figcaption class="mono-label">What your agent ships by default. <span class="hint">Scroll to peel it off.</span></figcaption>
+      </figure>
+    </div>
+  </header>
+
+  <section class="section wrap" id="cut">
+    <h2 class="h2" data-lines>What gets cut</h2>
+    <p class="section-lede">Each of these is a library default. The skills make the agent notice it, name the version that belongs to your subject, and build that instead.</p>
+    <div class="cut-head" aria-hidden="true"><span class="mono-label">Default</span><span class="mono-label">Decided</span></div>
+    <ul class="cutlist">
+      <li><span class="def"><span class="knife" aria-hidden="true"></span>Centered hero with a primary and a ghost button</span><span class="dec"><span class="cut-mobile-label mono-label">Instead</span>An opening that shows the subject itself</span></li>
+      <li><span class="def"><span class="knife" aria-hidden="true"></span>Three icon cards in a row</span><span class="dec"><span class="cut-mobile-label mono-label">Instead</span>A layout taken from the subject's own spatial metaphor</span></li>
+      <li><span class="def"><span class="knife" aria-hidden="true"></span>Indigo-to-purple gradient on white</span><span class="dec"><span class="cut-mobile-label mono-label">Instead</span>Four to six colors taken from the subject's world</span></li>
+      <li><span class="def"><span class="knife" aria-hidden="true"></span>System font at one size and one weight</span><span class="dec"><span class="cut-mobile-label mono-label">Instead</span>A real type pairing with a set scale</span></li>
+      <li><span class="def"><span class="knife" aria-hidden="true"></span>A spinner, "No data" and a red "Error" toast</span><span class="dec"><span class="cut-mobile-label mono-label">Instead</span>Loading, empty and error states that tell people what to do next</span></li>
+      <li><span class="def"><span class="knife" aria-hidden="true"></span>Everything fades in, or nothing moves at all</span><span class="dec"><span class="cut-mobile-label mono-label">Instead</span>Weighted motion only on the gestures that matter</span></li>
+      <li><span class="def"><span class="knife" aria-hidden="true"></span>"Manage your workflow efficiently"</span><span class="dec"><span class="cut-mobile-label mono-label">Instead</span>Copy that names what the user actually controls</span></li>
+    </ul>
+  </section>
+
+  <section class="section wrap" id="concept">
+    <div class="proof">
+      <div>
+        <h2 class="h2" data-lines>Concept before code</h2>
+        <p class="section-lede">studio-sites stops the agent from writing code until it has written five lines: the tension, the truth about the subject, one idea, one signature effect and one thing it won't do. This is the statement behind the page you're reading.</p>
+      </div>
+      <article class="sheet concept-sheet" aria-label="Concept statement for this page">
+        <div class="sheet-top"><span>Concept statement</span><span>No Defaults · this page</span></div>
+        <dl class="concept">
+          <dt>Big Question</dt>
+          <dd>How can we prove a design method works without the page turning into an effects reel, while still making a $19 decision take ten seconds?</dd>
+          <dt>Subject Truth</dt>
+          <dd>Generated sites look generated because nobody decided anything. Every element was left at its default.</dd>
+          <dt>Concept</dt>
+          <dd>The page is a cutting mat. The default template is a sticker on it, and the kit peels it off.</dd>
+          <dt>Signature</dt>
+          <dd>One WebGL peel on the sticker, <strong>because the product removes defaults.</strong></dd>
+          <dt>Restraint</dt>
+          <dd>Everything after the hero is flat paper and type. No second effect, no parallax, no preloader.</dd>
+        </dl>
+        <p class="sheet-foot">The peel uses the image-plane recipe in references/threejs-signature.md, with a curl added to the vertex shader.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section wrap" id="kit">
+    <h2 class="h2" data-lines>In the kit</h2>
+    <p class="section-lede">Two skill folders your agent loads on its own when you ask for a site or an interface. They work together: studio-sites owns the concept and the motion, craft-led-interfaces owns the details.</p>
+    <div class="pieces">
+      <article class="sheet piece">
+        <h3>studio-sites</h3>
+        <p>Concept phase, design language, motion architecture and build order for landing pages, portfolios, product and campaign sites.</p>
+        <ul class="files">
+          <li><code>SKILL.md</code>The method, the build order and a pre-ship smell test</li>
+          <li><code>references/lenis-gsap.md</code>Lenis and ScrollTrigger on one clock, SplitText line reveals, clip-path wipes, preloader, fallback scroller</li>
+          <li><code>references/threejs-signature.md</code>WebGL planes locked to DOM images, peel, curl, wave and hover shaders, color handling, performance limits</li>
+          <li><code>references/concept-worksheet.md</code>The five-line concept statement with three worked examples</li>
+        </ul>
+      </article>
+      <article class="sheet piece">
+        <h3>craft-led-interfaces</h3>
+        <p>The detail layer for any interface, from a landing page to a settings screen. It covers refusing each default, designing the in-between states, spending motion where it helps, and an 11-point check before shipping.</p>
+        <ul class="files">
+          <li><code>SKILL.md</code>Framework-agnostic. Works as a skill or pasted in as a project rule.</li>
+        </ul>
+        <p class="note" data-free>Also free on <a href="https://github.com/negadan/no-defaults">GitHub</a>, so you can try the method before you buy.</p>
+      </article>
+    </div>
+    <p class="also">Also included: an install guide for six agents, including the Claude app. The source of this page is open on GitHub as a worked example.</p>
+    <p class="works mono-label">Claude Code · Claude app · Cursor · OpenAI Codex · GitHub Copilot · Gemini CLI · any agent that reads SKILL.md</p>
+  </section>
+
+  <section class="section wrap" id="install">
+    <div class="install-grid">
+      <div>
+        <h2 class="h2" data-lines>One line to install</h2>
+        <p class="section-lede">Unzip, then copy both folders into your agent's skills folder. This is the command for Claude Code. The README has the paths for the other five.</p>
+      </div>
+      <div>
+        <div class="term">
+          <div class="term-bar" role="tablist" aria-label="Operating system">
+            <button class="tab" role="tab" id="tab-unix" aria-selected="true" aria-controls="panel-unix">macOS / Linux</button>
+            <button class="tab" role="tab" id="tab-win" aria-selected="false" aria-controls="panel-win" tabindex="-1">Windows</button>
+            <button class="copy" id="copyBtn" type="button">Copy</button>
+          </div>
+          <pre id="panel-unix" role="tabpanel" aria-labelledby="tab-unix" data-lenis-prevent><code><span class="prompt">$ </span><span class="cmd">mkdir -p ~/.claude/skills &amp;&amp; cp -R skills/* ~/.claude/skills/</span></code></pre>
+          <pre id="panel-win" role="tabpanel" aria-labelledby="tab-win" data-lenis-prevent hidden><code><span class="prompt">PS&gt; </span><span class="cmd">Copy-Item -Recurse -Force .\skills\* "$HOME\.claude\skills\"</span></code></pre>
+        </div>
+        <p class="install-note">Then ask for a site as usual. The concept statement comes back first, which is the cheapest moment to push back.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" id="buy">
+    <div class="price-grid">
+      <div class="sheet price-card">
+        <p class="amount">$19<small>USD</small></p>
+        <p>One payment. Both skills, the reference recipes, the install guide and every 1.x update.</p>
+        <a class="buy" href="https://buy.polar.sh/polar_cl_bl1zVAS4nvNMnnjmEnAWmtNOuRUmObzJhKxqA1dj2t4" rel="noopener">Get the kit
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 10h13M11 4.5 16.5 10 11 15.5"/></svg>
+        </a>
+        <p class="fine">Checkout by Polar, which handles sales tax. If the kit doesn't change what your agent builds, email within 14 days for a full refund.</p>
+      </div>
+      <div class="faq">
+        <h3>Isn't this just a prompt?</h3>
+        <p>It's two skill folders that load on their own when you ask for a site or an interface, plus reference files the agent reads before it writes scroll or WebGL code. The recipes are pinned to current library versions, so the agent stops guessing at APIs that have changed.</p>
+        <h3>Which agents does it work with?</h3>
+        <p>Anything that reads SKILL.md: Claude Code, the Claude app, Cursor, OpenAI Codex, GitHub Copilot and Gemini CLI. For other tools, paste a skill into a project rule.</p>
+        <h3>Can I use it for client work?</h3>
+        <p>Yes, on as many of your own and your clients' projects as you like. The one thing you can't do is republish the skill files.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot wrap">
+    <span class="mono-label">SolaLabs · solalabs.co.za</span>
+    <span class="mono-label">Support: <span class="email">solalabsapp@gmail.com</span></span>
+  </footer>
+</main>
+
+<canvas id="gl" aria-hidden="true"></canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/SplitText.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.3.26/dist/lenis.min.js"></script>
+<script>
+(() => {
+  const root = document.documentElement;
+
+  // The sticker: the default AI landing page, drawn once into a canvas
+  (function drawDefault(cv) {
+    if (!cv || !cv.getContext) return;
+    const c = cv.getContext('2d');
+    const F = 'Inter, "Helvetica Neue", Arial, sans-serif';
+    const rr = (x, y, w, h, r) => { c.beginPath(); c.roundRect(x, y, w, h, r); };
+    const g = c.createLinearGradient(0, 0, 1280, 800);
+    g.addColorStop(0, '#4f46e5'); g.addColorStop(0.55, '#7c3aed'); g.addColorStop(1, '#c026d3');
+    c.fillStyle = g; c.fillRect(0, 0, 1280, 800);
+    c.textBaseline = 'middle';
+    // nav
+    c.fillStyle = 'rgba(255,255,255,.25)'; rr(64, 39, 34, 34, 10); c.fill();
+    c.fillStyle = '#fff'; c.font = `700 26px ${F}`; c.textAlign = 'left'; c.fillText('Acme AI', 110, 57);
+    c.font = `400 19px ${F}`; c.fillStyle = 'rgba(255,255,255,.85)';
+    [['Features', 485], ['Pricing', 600], ['About', 698], ['Blog', 788]].forEach(([t, x]) => c.fillText(t, x, 57));
+    c.fillStyle = '#fff'; rr(1098, 34, 118, 44, 22); c.fill();
+    c.fillStyle = '#4f46e5'; c.font = `600 18px ${F}`; c.textAlign = 'center'; c.fillText('Sign up', 1157, 57);
+    // badge
+    c.fillStyle = 'rgba(255,255,255,.18)'; rr(523, 161, 234, 36, 18); c.fill();
+    c.strokeStyle = 'rgba(255,255,255,.3)'; c.lineWidth = 1; c.stroke();
+    c.fillStyle = '#fff'; c.font = `400 16px ${F}`; c.fillText('New: AI-powered workflows', 640, 180);
+    // headline + sub
+    c.font = `800 66px ${F}`; if ('letterSpacing' in c) c.letterSpacing = '-1.5px';
+    c.fillText('Build faster with', 640, 259); c.fillText('AI-powered solutions', 640, 330);
+    if ('letterSpacing' in c) c.letterSpacing = '0px';
+    c.font = `400 22px ${F}`; c.fillStyle = 'rgba(255,255,255,.85)';
+    c.fillText('Streamline your workflow and boost productivity with our cutting-edge', 640, 405);
+    c.fillText('platform.', 640, 438);
+    // buttons
+    c.save(); c.shadowColor = 'rgba(0,0,0,.2)'; c.shadowBlur = 30; c.shadowOffsetY = 10;
+    c.fillStyle = '#fff'; rr(449, 488, 193, 54, 12); c.fill(); c.restore();
+    c.fillStyle = '#4f46e5'; c.font = `700 19px ${F}`; c.fillText('Get started →', 545, 515);
+    c.strokeStyle = 'rgba(255,255,255,.7)'; c.lineWidth = 2; rr(661, 489, 169, 52, 12); c.stroke();
+    c.fillStyle = '#fff'; c.font = `600 19px ${F}`; c.fillText('Learn more', 745, 515);
+    // three icon cards
+    const icons = ['M13 2 3 14h9l-1 8 10-12h-9l1-8z', 'M6 11h12a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2zM8 11V7a4 4 0 0 1 8 0v4', 'M3 17l6-6 4 4 8-8M14 7h7v7'];
+    const cards = [['Lightning fast', ['Get results in seconds with our optimized', 'engine.']], ['Secure by default', ['Enterprise-grade security you can trust.']], ['Scale effortlessly', ['Grow from one user to millions with ease.']]];
+    cards.forEach(([title, lines], i) => {
+      const x = 64 + i * 392.5;
+      c.save(); c.shadowColor = 'rgba(30,20,80,.25)'; c.shadowBlur = 40; c.shadowOffsetY = 20;
+      c.fillStyle = '#fff'; rr(x, 598, 367, 240, 18); c.fill(); c.restore();
+      c.fillStyle = '#eef2ff'; rr(x + 26, 624, 48, 48, 14); c.fill();
+      c.save(); c.translate(x + 37, 635); c.scale(26 / 24, 26 / 24);
+      c.strokeStyle = '#6366f1'; c.lineWidth = 2.2; c.lineCap = 'round'; c.lineJoin = 'round';
+      c.stroke(new Path2D(icons[i])); c.restore();
+      c.textAlign = 'left'; c.fillStyle = '#1f2937'; c.font = `700 21px ${F}`; c.fillText(title, x + 26, 700);
+      c.fillStyle = '#6b7280'; c.font = `400 16px ${F}`;
+      lines.forEach((l, j) => c.fillText(l, x + 26, 731 + j * 24));
+      c.textAlign = 'center';
+    });
+  })(document.getElementById('stickerImg'));
+
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Ruler numbers every 5 cm (120px)
+  const nums = document.querySelector('.ruler-nums');
+  if (nums) {
+    const count = Math.ceil(Math.max(screen.width, innerWidth) / 120) + 1;
+    for (let i = 1; i <= count; i++) {
+      const s = document.createElement('span');
+      s.textContent = i * 5;
+      s.style.left = (i * 120) + 'px';
+      nums.appendChild(s);
+    }
+  }
+
+  // Hide the GitHub note until the free repo link exists
+  const free = document.querySelector('[data-free] a');
+  if (free && free.getAttribute('href').startsWith('__')) free.closest('[data-free]').hidden = true;
+
+  // Install tabs + copy
+  const tabs = [...document.querySelectorAll('.tab')];
+  const select = (tab) => {
+    tabs.forEach((t) => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', on);
+      t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+  };
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => select(t));
+    t.addEventListener('keydown', (e) => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      const next = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+      select(next); next.focus();
+    });
+  });
+  const copyBtn = document.getElementById('copyBtn');
+  copyBtn.addEventListener('click', () => {
+    const panel = document.querySelector('.term pre:not([hidden]) .cmd');
+    const text = panel.textContent;
+    const done = (label) => { copyBtn.textContent = label; setTimeout(() => (copyBtn.textContent = 'Copy'), 1800); };
+    const selectText = () => {
+      const r = document.createRange(); r.selectNodeContents(panel);
+      const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+      done('Selected, press Ctrl+C');
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => done('Copied'), selectText);
+    } else selectText();
+  });
+
+  if (reduced || !window.gsap || !window.ScrollTrigger) {
+    root.classList.add('still');
+    window.__nd = { reduced: true };
+    return;
+  }
+
+  gsap.registerPlugin(ScrollTrigger);
+  if (window.SplitText) gsap.registerPlugin(SplitText);
+
+  // Lenis on GSAP's clock (canonical sync from references/lenis-gsap.md)
+  let lenis = null;
+  if (window.Lenis) {
+    lenis = new Lenis({ autoRaf: false, lerp: 0.1, smoothWheel: true });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+    document.querySelectorAll('a[href^="#"]').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        if (id.length > 1 && document.querySelector(id)) { e.preventDefault(); lenis.scrollTo(id, { offset: -8, duration: 1.2 }); }
+      });
+    });
+  }
+  window.__nd = { reduced: false, lenis };
+
+  // Section headings: masked line reveal, once
+  const heads = document.querySelectorAll('[data-lines]');
+  if (window.SplitText) {
+    document.fonts.ready.then(() => {
+      heads.forEach((el) => {
+        SplitText.create(el, {
+          type: 'lines', mask: 'lines', autoSplit: true,
+          onSplit(self) {
+            return gsap.from(self.lines, {
+              yPercent: 110, duration: 1, ease: 'power3.out', stagger: 0.08,
+              scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+            });
+          },
+        });
+      });
+    });
+  }
+
+  // The knife: each default gets cut through, then the decision lands
+  document.querySelectorAll('.cutlist li').forEach((li) => {
+    const tl = gsap.timeline({ scrollTrigger: { trigger: li, start: 'top 88%', once: true } });
+    tl.from(li.querySelector('.knife'), { scaleX: 0, duration: 0.8, ease: 'expo.inOut' })
+      .from(li.querySelector('.dec'), { x: -14, opacity: 0, duration: 0.7, ease: 'power3.out' }, '-=0.35');
+  });
+
+  // Paper sheets are laid down with one wipe each
+  document.querySelectorAll('.sheet, .term').forEach((el) => {
+    gsap.from(el, {
+      clipPath: 'inset(0% 0% 100% 0%)', duration: 1.1, ease: 'expo.inOut',
+      clearProps: 'clipPath',
+      scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+    });
+  });
+})();
+</script>
+
+<script type="importmap">
+  { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js" } }
+</script>
+<script type="module">
+import * as THREE from 'three';
+
+// The signature: the default-template sticker peels off the mat.
+const nd = window.__nd || { reduced: true };
+const wrap = document.getElementById('sticker');
+const img = document.getElementById('stickerImg');
+const hero = document.querySelector('.hero');
+const canvas = document.getElementById('gl');
+
+const weakTouch = matchMedia('(pointer: coarse)').matches && (navigator.hardwareConcurrency || 8) <= 4;
+let hasGL = false;
+try { hasGL = !!document.createElement('canvas').getContext('webgl2'); } catch (e) { hasGL = false; }
+
+if (!nd.reduced && !weakTouch && hasGL && window.gsap) start();
+
+function start() {
+  const REST = 0.16;                      // how far the corner is lifted at rest
+  const ANGLE = 2 * Math.PI / 180;        // matches CSS rotate(-2deg)
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setSize(innerWidth, innerHeight, false);
+
+  const scene = new THREE.Scene();
+  const dist = 1000;
+  const fovFor = (h) => 2 * Math.atan(h / 2 / dist) * (180 / Math.PI);
+  const camera = new THREE.PerspectiveCamera(fovFor(innerHeight), innerWidth / innerHeight, 10, 4000);
+  camera.position.z = dist;
+
+  const uniforms = {
+    uTex: { value: null },
+    uSize: { value: new THREE.Vector2(1, 1) },
+    uPeel: { value: 0 },
+    uAlpha: { value: 1 },
+  };
+
+  const VERT = /* glsl */`
+    uniform vec2 uSize;
+    uniform float uPeel;
+    varying vec2 vUv;
+    varying float vCurl;
+    const float PI = 3.14159265;
+    void main() {
+      vUv = uv;
+      vec2 p = position.xy * uSize;                 // CSS pixels, centered
+      vec2 N = normalize(vec2(1.0, 0.85));           // toward the top-right corner
+      float tMax = dot(uSize * 0.5, N);
+      float fold = tMax - uPeel * 2.0 * tMax;        // fold line sweeps across the sheet
+      float R = mix(26.0, 90.0, clamp(uPeel, 0.0, 1.0));
+      float t = dot(p, N);
+      vec3 pos = vec3(p, 0.0);
+      vCurl = 0.0;
+      if (t > fold) {
+        float d = t - fold;
+        float th = d / R;
+        float tn; float z;
+        if (th < PI) { tn = fold + R * sin(th); z = R * (1.0 - cos(th)); }
+        else { tn = fold - (d - PI * R); z = 2.0 * R; }
+        pos.xy += N * (tn - t);
+        pos.z = z;
+        vCurl = clamp(th / PI, 0.0, 1.0);
+      }
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+    }`;
+
+  const FRAG = /* glsl */`
+    uniform sampler2D uTex;
+    uniform float uAlpha;
+    varying vec2 vUv;
+    varying float vCurl;
+    void main() {
+      vec4 c;
+      if (gl_FrontFacing) {
+        c = texture2D(uTex, vUv);
+        c.rgb *= 1.0 - 0.3 * smoothstep(0.0, 0.5, vCurl);   // face darkens into the fold
+      } else {
+        vec3 back = vec3(0.925, 0.937, 0.905);              // sticker backing paper
+        back *= 0.8 + 0.2 * sin(vCurl * 3.14159);
+        c = vec4(back, 1.0);
+      }
+      gl_FragColor = vec4(c.rgb, c.a * uAlpha);
+    }`;
+
+  const mat = new THREE.ShaderMaterial({ uniforms, vertexShader: VERT, fragmentShader: FRAG, transparent: true, side: THREE.DoubleSide });
+  const mesh = new THREE.Mesh(new THREE.PlaneGeometry(1, 1, 96, 64), mat);
+  mesh.rotation.z = ANGLE;
+  mesh.visible = false;
+  scene.add(mesh);
+
+  // Peel = intro lift + scroll progress + hover lift + a little scroll-speed wobble
+  const s = { intro: 0, scroll: 0, scrollTarget: 0, hover: 0, wobble: 0 };
+
+  ScrollTrigger.create({
+    start: 0,
+    end: () => hero.offsetTop + hero.offsetHeight * 0.95,
+    onUpdate: (self) => { s.scrollTarget = self.progress; },
+  });
+
+  wrap.addEventListener('pointerenter', () => gsap.to(s, { hover: 1, duration: 0.7, ease: 'back.out(1.4)' }));
+  wrap.addEventListener('pointerleave', () => gsap.to(s, { hover: 0, duration: 0.6, ease: 'power3.out' }));
+
+  let visible = true, cleared = false;
+  new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { rootMargin: '120px 0px' }).observe(hero);
+
+  function sync() {
+    const r = wrap.getBoundingClientRect();
+    uniforms.uSize.value.set(wrap.offsetWidth, wrap.offsetHeight);
+    mesh.position.set(r.left + r.width / 2 - innerWidth / 2, -(r.top + r.height / 2 - innerHeight / 2), 0);
+  }
+
+  {
+    const tex = new THREE.CanvasTexture(img);
+    tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    uniforms.uTex.value = tex;
+    mesh.visible = true;
+    sync();
+    renderer.render(scene, camera);
+    wrap.classList.add('is-gl');
+    gsap.to(s, { intro: 1, duration: 1.4, ease: 'back.out(1.6)', delay: 0.15 });
+
+    gsap.ticker.add(() => {
+      if (!visible) {
+        if (!cleared) { renderer.clear(); cleared = true; }
+        return;
+      }
+      cleared = false;
+      s.scroll += (s.scrollTarget - s.scroll) * 0.12;
+      const v = nd.lenis ? nd.lenis.velocity : 0;
+      s.wobble += (Math.max(-0.05, Math.min(0.05, v * 0.0025)) - s.wobble) * 0.1;
+      const peel = s.intro * REST + s.scroll * 0.95 + s.hover * 0.06 + s.wobble;
+      uniforms.uPeel.value = Math.max(0, peel);
+      uniforms.uAlpha.value = 1 - Math.min(1, Math.max(0, (peel - 0.82) / 0.2));
+      sync();
+      renderer.render(scene, camera);
+    });
+  }
+
+  addEventListener('resize', () => {
+    renderer.setSize(innerWidth, innerHeight, false);
+    camera.fov = fovFor(innerHeight);
+    camera.aspect = innerWidth / innerHeight;
+    camera.updateProjectionMatrix();
+  });
+}
+</script>
+
+</body></html>
