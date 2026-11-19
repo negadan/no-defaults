@@ -79,9 +79,13 @@ Quality is not spread evenly. It concentrates in a handful of surfaces that gene
 
 **Typography.** Pick a real pairing with personality — a characterful display face used with restraint plus a clean body face — not the system stack. Set an intentional scale (sizes, weights, tracking). Type is the single biggest lever on whether a page feels authored; make it a memorable part of the design, not a neutral delivery vehicle.
 
+Minimum sizes, whatever the aesthetic: body text 16px (17–18px for long reading); labels and captions at least 12px; uppercase or monospace labels at least 12px with at least 0.06em tracking. Tiny uppercase mono everywhere is a costume for "designed," and it fails on a phone. Use it for one job (a real code, a timestamp, a ticket number), not as the label style for every structure on the page.
+
 **Spacing & density.** Use a spacing scale, not a single value. Decide the intended density (airy and editorial vs. dense and instrument-like) and commit to it consistently.
 
-**Color & surface.** Derive the palette from the subject (4–6 named values), with a restrained accent that means something. Surfaces earn their weight; not everything is a floating card. Avoid the indigo-gradient-on-white reflex unless the brief genuinely calls for it.
+**Color & surface.** Derive the palette from the subject (4–6 named values), with an accent that means something, and let at least one colour from the subject's world be used big somewhere. Surfaces earn their weight; not everything is a floating card. No frames inside frames: a bordered image inside a tinted panel inside a section is three decisions nobody made. A border should be an object's edge (a ticket, a label, a shelf), not a container reflex. Avoid the indigo-gradient-on-white reflex unless the brief genuinely calls for it.
+
+**Objects over components.** Where the subject has a physical object that does the same job, use it: a price as a tag, a cart as a receipt, a list as a shelf or rail, a form as a ticket or slip. The object carries the metaphor in the layout, where a card can only carry it in the copy.
 
 **Copy.** Words are design material. Name things by what the user controls and recognizes, in plain active voice, in the product's voice. Specific beats clever. Empty states and errors are copy moments, not afterthoughts.
 
@@ -95,7 +99,7 @@ Quality is not spread evenly. It concentrates in a handful of surfaces that gene
 
 Do most of this in your head or notes; only show the user output when you're confident it will land.
 
-1. **Pin the subject.** If the brief doesn't fix what the product is, fix it yourself: name the subject, its audience, and the single job of the screen, and state your choice. Distinctive decisions come from the subject's world, so go find its materials and vernacular.
+1. **Pin the subject.** If the brief doesn't fix what the product is, fix it yourself: name the subject, its audience, and the single job of the screen, and state your choice. Distinctive decisions come from the subject's world, so go find its materials and vernacular: research how the work is really done (the steps, the tools, how things are held and stored) before borrowing any of it as a metaphor. A metaphor that gets the real world wrong reads as fake to anyone who knows it.
 2. **Choose the cadence (for apps).** If it's a tool, map the layout to the actual workflow's sequence, not a generic template. Identify the primary constraint the user fights and make managing it the most supported thing on screen.
 3. **Pick the signature.** Decide the *one* memorable thing this interface will be remembered by — the shelf-menu, an orchestrated load, a hero that is the subject itself rather than a headline-over-gradient. Spend your boldness here; keep everything around it disciplined.
 4. **Lay down a token system.** Before building: a 4–6 color palette (named hex), a type pairing with a scale, a spacing scale, and a motion vocabulary (which gestures get weight, which easing). Derive every later decision from these.
@@ -137,6 +141,12 @@ Each "yes" on the left is a defect, not a preference.
 - Does any AI action overwrite the user's work? → Make it a non-destructive version.
 - Are unequal things drawn at equal size, or is spacing a single uniform value? → Make size and space proportional and scaled.
 - Is the type the system stack and the color an indigo gradient? → Re-derive both from the subject.
+- Is the palette all neutrals with a thumbnail-sized accent? → Give one subject colour a big surface.
+- Are there frames inside frames (a bordered box in a tinted panel in a section)? → Remove a layer; keep only borders that are objects.
+- Is one tiny uppercase label style carrying all the structure, or is any text under 12px? → Raise sizes to the minimums and give the label style one job.
+- Is a generic card or chip doing a job a real object from the subject could do? → Make it the object.
+- Does a metaphor or object get the real work wrong (something hung that's really racked, a tool used the wrong way)? → Research how it's done and fix it.
+- Did I hand off without listing the placeholders (phone numbers, addresses, stand-in images)? → List them.
 - Does the copy sell or name system internals? → Rewrite to name what the user controls.
 - Did I animate everything / is there clutter? → Cut motion to the load-bearing gestures and remove one accessory.
 

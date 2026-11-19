@@ -6,7 +6,7 @@ This repo holds the **free** piece, `craft-led-interfaces`, plus the source of t
 
 ## craft-led-interfaces (free, MIT)
 
-The element-level craft layer for any UI. It makes the agent refuse each library default, design the loading, empty and error states, spend motion only where it helps, take its palette and type from the subject, and run an 11-point check before shipping. It is framework-agnostic and works as a skill or pasted in as a project rule.
+The element-level craft layer for any UI. It makes the agent refuse each library default, design the loading, empty and error states, spend motion only where it helps, take its palette and type from the subject, and run a 15-point check before shipping. It is framework-agnostic and works as a skill or pasted in as a project rule.
 
 ### Install
 
@@ -28,7 +28,7 @@ Restart the agent, then ask for a site or interface as usual. For other tools, p
 
 ## The full kit ($19)
 
-[`studio-sites`](https://solalabs.co.za/no-defaults/) is the other half: a concept phase that makes the agent write five lines before any code, then the lightest motion that carries the concept. Native CSS scroll animations come first, with Lenis, GSAP and Three.js only where they earn their weight, all from recipes checked against current versions. The kit also includes install guides for six agents and free 1.x updates. One-time payment, 14-day refund.
+[`studio-sites`](https://solalabs.co.za/no-defaults/) is the other half: the agent first researches how the subject's work is really done, writes a five-line concept before any code, builds the page from the subject's own objects, then adds the lightest motion that carries the concept. See two demo sites an agent built from one-line prompts at https://solalabs.co.za/no-defaults/#demos. Native CSS scroll animations come first, with Lenis, GSAP and Three.js only where they earn their weight, all from recipes checked against current versions. The kit also includes install guides for six agents and free 1.x updates. One-time payment, 14-day refund.
 
 **[Get the kit for $19](https://buy.polar.sh/polar_cl_bl1zVAS4nvNMnnjmEnAWmtNOuRUmObzJhKxqA1dj2t4)** · in South Africa, [pay R349 with PayFast](https://solalabs.co.za/no-defaults/buy) · [about the kit](https://solalabs.co.za/no-defaults/)
 
