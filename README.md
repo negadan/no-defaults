@@ -30,7 +30,7 @@ Restart the agent, then ask for a site or interface as usual. For other tools, p
 
 [`studio-sites`](https://solalabs.co.za/no-defaults/) is the other half: a concept phase that makes the agent write five lines before any code, then the lightest motion that carries the concept. Native CSS scroll animations come first, with Lenis, GSAP and Three.js only where they earn their weight, all from recipes checked against current versions. The kit also includes install guides for six agents and free 1.x updates. One-time payment, 14-day refund.
 
-**[Get the kit for $19](https://buy.polar.sh/polar_cl_bl1zVAS4nvNMnnjmEnAWmtNOuRUmObzJhKxqA1dj2t4)** · in South Africa, [pay R349 with PayFast](https://no-defaults-checkout.negadan77.workers.dev/buy) · [about the kit](https://solalabs.co.za/no-defaults/)
+**[Get the kit for $19](https://buy.polar.sh/polar_cl_bl1zVAS4nvNMnnjmEnAWmtNOuRUmObzJhKxqA1dj2t4)** · in South Africa, [pay R349 with PayFast](https://solalabs.co.za/no-defaults/buy) · [about the kit](https://solalabs.co.za/no-defaults/)
 
 ## About this repo
 
