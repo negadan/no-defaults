@@ -28,14 +28,14 @@ Restart the agent, then ask for a site or interface as usual. For other tools, p
 
 ## The full kit ($19)
 
-[`studio-sites`](https://buy.polar.sh/polar_cl_bl1zVAS4nvNMnnjmEnAWmtNOuRUmObzJhKxqA1dj2t4) is the other half: a concept phase that makes the agent write five lines before any code, then a Lenis, GSAP and Three.js build from recipes checked against current versions. The kit also includes install guides for six agents and free 1.x updates. One-time payment, 14-day refund.
+[`studio-sites`](https://solalabs.co.za/no-defaults/) is the other half: a concept phase that makes the agent write five lines before any code, then the lightest motion that carries the concept. Native CSS scroll animations come first, with Lenis, GSAP and Three.js only where they earn their weight, all from recipes checked against current versions. The kit also includes install guides for six agents and free 1.x updates. One-time payment, 14-day refund.
 
-**[Get the kit](https://buy.polar.sh/polar_cl_bl1zVAS4nvNMnnjmEnAWmtNOuRUmObzJhKxqA1dj2t4)**
+**[Get the kit for $19](https://buy.polar.sh/polar_cl_bl1zVAS4nvNMnnjmEnAWmtNOuRUmObzJhKxqA1dj2t4)** · in South Africa, [pay R349 with PayFast](https://no-defaults-checkout.negadan77.workers.dev/buy) · [about the kit](https://solalabs.co.za/no-defaults/)
 
 ## About this repo
 
 - `craft-led-interfaces/SKILL.md` is MIT licensed.
-- `index.html` is the kit's sales page, built with the kit and left open as a worked example.
+- `index.html` is the source of the kit's sales page ([live here](https://solalabs.co.za/no-defaults/)), built with the kit and left open as a worked example.
 - The paid `studio-sites` skill and its reference files are not in this repo.
 
 Support: solalabsapp@gmail.com. Made by SolaLabs (solalabs.co.za).
