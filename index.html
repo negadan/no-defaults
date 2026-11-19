@@ -1,6 +1,19 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>No Defaults Kit</title>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>No Defaults — Studio Web Kit · SolaLabs</title>
 <meta name="description" content="Two agent skills that make Claude Code, Cursor, Codex and other AI coding agents build websites that don't look AI-generated.">
+<link rel="canonical" href="https://solalabs.co.za/no-defaults/">
+<meta property="og:type" content="product">
+<meta property="og:title" content="No Defaults — Studio Web Kit">
+<meta property="og:description" content="Two agent skills that stop Claude Code, Cursor, Codex, Copilot and Gemini CLI from shipping the generic AI website. $19 or R349, once.">
+<meta property="og:url" content="https://solalabs.co.za/no-defaults/">
+<meta property="og:image" content="https://solalabs.co.za/no-defaults/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<style>img{max-width:100%}[hidden]{display:none!important}</style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@800&family=Big+Shoulders+Display:wght@700;900&family=Archivo:wght@400;500;600&family=Martian+Mono:wght@400;500&display=swap">
@@ -301,10 +314,14 @@
     .sticker-art { clip-path: polygon(0 0, calc(100% - 44px) 0, 100% 44px, 100% 100%, 0 100%); }
     .sticker::after { width: 44px; height: 44px; }
   }
+  .price-card .rand { margin: 20px 0 0; padding-top: 16px; border-top: 1px dashed var(--ink-muted); font-size: .95rem; color: var(--ink); }
+  .price-card .rand a { color: var(--ink); font-weight: 600; text-underline-offset: 3px; }
   @media (prefers-reduced-motion: reduce) {
     .buy, .buy svg { transition: none; }
   }
 </style>
+</head>
+<body>
 
 <div class="ruler" aria-hidden="true"><div class="ruler-nums"></div><span class="ruler-unit">cm</span></div>
 
@@ -317,11 +334,11 @@
     <div class="hero-row">
       <div class="hero-copy">
         <p class="lede">Two skills that make your AI coding agent decide every element of a website, instead of shipping the one it always ships.</p>
-        <p>It writes a concept first. Then it builds with smooth scroll, choreographed reveals and one WebGL moment, using recipes checked against current GSAP, Lenis and Three.js.</p>
+        <p>It writes a concept first. Then it picks the lightest motion that carries it: native CSS scroll animations first, GSAP, Lenis and Three.js only where the concept needs them. Every recipe is checked against current versions.</p>
         <a class="buy" href="#buy">Get the kit for $19
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 10h13M11 4.5 16.5 10 11 15.5"/></svg>
         </a>
-        <p class="fine">One-time payment · 14-day refund · Free 1.x updates</p>
+        <p class="fine">One-time payment · $19 or R349 · 14-day refund · Free 1.x updates</p>
       </div>
 
       <figure class="sticker-wrap">
@@ -383,6 +400,7 @@
         <p>Concept phase, design language, motion architecture and build order for landing pages, portfolios, product and campaign sites.</p>
         <ul class="files">
           <li><code>SKILL.md</code>The method, the build order and a pre-ship smell test</li>
+          <li><code>references/native-motion.md</code>Native CSS scroll-driven animations, sticky scrubbed scenes, Canvas 2D and raw WebGL2 shaders, with no library at all</li>
           <li><code>references/lenis-gsap.md</code>Lenis and ScrollTrigger on one clock, SplitText line reveals, clip-path wipes, preloader, fallback scroller</li>
           <li><code>references/threejs-signature.md</code>WebGL planes locked to DOM images, peel, curl, wave and hover shaders, color handling, performance limits</li>
           <li><code>references/concept-worksheet.md</code>The five-line concept statement with three worked examples</li>
@@ -431,6 +449,7 @@
           <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M3 10h13M11 4.5 16.5 10 11 15.5"/></svg>
         </a>
         <p class="fine">Checkout by Polar, which handles sales tax. If the kit doesn't change what your agent builds, email within 14 days for a full refund.</p>
+        <p class="rand">In South Africa? <a href="https://no-defaults-checkout.negadan77.workers.dev/buy" rel="noopener">Pay R349 in rand with PayFast</a>. The download opens as soon as the payment clears.</p>
       </div>
       <div class="faq">
         <h3>Isn't this just a prompt?</h3>
